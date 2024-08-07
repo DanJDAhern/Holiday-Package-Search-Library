@@ -9,10 +9,18 @@
 
   <ItemGroup>
     <None Remove="Data\Json\Airports.json" />
+    <None Remove="Data\Json\Flights.json" />
+    <None Remove="Data\Json\Hotels.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Data\Json\Airports.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Json\Flights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Json\Hotels.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
