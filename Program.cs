@@ -1,10 +1,12 @@
-﻿namespace HolidaySearchOTB
+﻿using HolidaySearchOTB.Services;
+
+namespace HolidaySearchOTB
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            HolidaySearchService holiday = new HolidaySearchService("London", "Test", "23/23/2333", 7);
         }
     }
 }
