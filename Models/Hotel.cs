@@ -13,7 +13,7 @@ namespace HolidaySearchOTB.Models
         public int Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("arrival")]
+        [JsonProperty("arrival_date")]
         public DateTime ArrivalDate { get; set; }
         [JsonProperty("price_per_night")]
         public decimal PricePerNight { get; set; }

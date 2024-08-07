@@ -1,7 +1,9 @@
 ﻿using HolidaySearchOTB.Data;
 using HolidaySearchOTB.Models;
+using HolidaySearchOTB.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +24,8 @@ namespace HolidaySearchOTB.Services
         {
             var departureAirports = GetAllValidAirports(departingFrom);
             var arrivalAirports = GetAllValidAirports(travellingTo);
-
-            GetAllMatchingFlights(departureAirports, arrivalAirports, departureDate);
+            var validFlights = GetAllMatchingFlights(departureAirports, arrivalAirports, departureDate);
+            var matchingHotels = GetAllMatchingHotels(arrivalAirports, validFlights);
         }
         // Parse user query
         // 1. Find user's departure airport from list of possible airports
@@ -72,10 +74,12 @@ namespace HolidaySearchOTB.Services
             foreach (var departureAirport in departureAirports)
             {
                 var flightsFromAirport = _flights.Where(f => f.From == departureAirport.Code);
+
                 foreach (var arrivalAirport in arrivalAirports)
                 {
-                    var flightsToAirport = flightsFromAirport
-                        .Where(f => f.To == arrivalAirport.Code && f.departureDate.Date == parsedDepartureDate.Date);
+                    var flightsToAirport = flightsFromAirport .Where(f => f.To == arrivalAirport.Code 
+                                                               && f.DepartureDate.Date == parsedDepartureDate.Date);
+
                     matchingFlights.AddRange(flightsToAirport);
                 }
             }
@@ -86,5 +90,36 @@ namespace HolidaySearchOTB.Services
 
             return matchingFlights;
         }
+
+        public List<Hotel> GetAllMatchingHotels(List<Airport> arrivalAirports, List<Flight> arrivalFlights)
+        {
+            HotelDataLoader hotelDataLoader = new HotelDataLoader();
+            var hotels = hotelDataLoader.LoadData(hotelDataPath);
+
+            // Create a set of unique departure dates from the flights
+            var flightDepartureDates = arrivalFlights.Select(f => f.DepartureDate.Date).Distinct().ToList();
+
+            var matchingHotels = new List<Hotel>();
+
+
+            foreach (var arrivalAirport in arrivalAirports)
+            {
+                var validHotels = hotels.Where(hotel =>
+                    hotel.LocalAirports.Contains(arrivalAirport.Code) &&
+                    flightDepartureDates.Contains(hotel.ArrivalDate.Date)
+                ).ToList();
+
+                matchingHotels.AddRange(validHotels);
+            }
+
+            foreach (var hotel in matchingHotels)
+            {
+                Console.WriteLine($"Hotel Name: {hotel.Name}, Code: {hotel.Id}");
+            }
+
+            return matchingHotels;
+        }
+
+
     }
 }

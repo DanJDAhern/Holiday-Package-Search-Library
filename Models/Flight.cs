@@ -20,6 +20,6 @@ namespace HolidaySearchOTB.Models
         [JsonProperty("price")]
         public decimal Price { get; set; }
         [JsonProperty("departure_date")]
-        public DateTime departureDate { get; set; }
+        public DateTime DepartureDate { get; set; }
     }
 }
