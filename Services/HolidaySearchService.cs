@@ -23,7 +23,7 @@ namespace HolidaySearchOTB.Services
             var departureAirports = GetAllValidAirports(departingFrom);
             var arrivalAirports = GetAllValidAirports(travellingTo);
 
-            GetAllMatchingFlights(departureAirports, arrivalAirports);
+            GetAllMatchingFlights(departureAirports, arrivalAirports, departureDate);
         }
         // Parse user query
         // 1. Find user's departure airport from list of possible airports
@@ -59,14 +59,23 @@ namespace HolidaySearchOTB.Services
             FlightDataLoader flightDataLoader = new FlightDataLoader();
             var _flights = flightDataLoader.LoadData(flightDataPath);
 
+            // Try to parse the inputted departure date into a DateTime format
+
+            DateTime parsedDepartureDate;
+            if (!DateTime.TryParse(departureDate, out parsedDepartureDate))
+            {
+                throw new ArgumentException("Invalid departure date format. Please make sure you're inputting YYYY-MM-DD.");
+            }
+
             var matchingFlights = new List<Flight>();
 
             foreach (var departureAirport in departureAirports)
             {
-                var flightsFromAirport = _flights.Where(f => f.From == departureAirport.Code.ToString());
+                var flightsFromAirport = _flights.Where(f => f.From == departureAirport.Code);
                 foreach (var arrivalAirport in arrivalAirports)
                 {
-                    var flightsToAirport = flightsFromAirport.Where(f => f.To == arrivalAirport.Code.ToString());
+                    var flightsToAirport = flightsFromAirport
+                        .Where(f => f.To == arrivalAirport.Code && f.departureDate.Date == parsedDepartureDate.Date);
                     matchingFlights.AddRange(flightsToAirport);
                 }
             }

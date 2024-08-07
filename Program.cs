@@ -6,7 +6,7 @@ namespace HolidaySearchOTB
     {
         static void Main(string[] args)
         {
-            HolidaySearchService holiday = new HolidaySearchService("Any London", "Test", "23/23/2333", 7);
+            HolidaySearchService holiday = new HolidaySearchService("Any London", "Any Spain", "2023-06-15", 7);
         }
     }
 }
