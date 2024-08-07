@@ -12,11 +12,21 @@ namespace HolidaySearchOTB.Services
         // Load in flight and hotel data
         private readonly List<Flight> _flights;
         private readonly List<Hotel> _hotels;
+        private readonly List<Airport> _airports;
+
+        public HolidaySearchService(string departingFrom, string travellingTo, string departureDate, int Duration)
+        {
+            
+        }
         // Parse user query
         // 1. Find user's departure airport from list of possible airports
         // 2. For every possible airport, run a search to find all flights going to destination on specified date
         // 3. From there, find all local hotels from list of possible local hotels that have the right amount of nights
         // 4. Then, return these so they're accessible under the .Results operator
-         
+
+        public List<string> GetAllValidAirports(string airport)
+        {
+            return null;
+        }
     }
 }
