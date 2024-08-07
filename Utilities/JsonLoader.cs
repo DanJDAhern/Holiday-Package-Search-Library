@@ -10,7 +10,7 @@ namespace HolidaySearchOTB.Utilities
 {
     public class JsonLoader
     {
-        public List<T> LoadJsonData<T>(string filePath)
+        public static List<T> LoadJsonData<T>(string filePath)
         {
             // Read in Json text and then return it deserialised
             var jsonData = File.ReadAllText(filePath);
