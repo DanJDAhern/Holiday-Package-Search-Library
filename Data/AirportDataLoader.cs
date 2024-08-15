@@ -11,7 +11,7 @@ namespace HolidaySearchOTB.Data
 {
     public class AirportDataLoader : IDataLoader<Airport>
     {
-        public List<Airport> LoadData(string filePath)
+        public virtual List<Airport> LoadData(string filePath)
         {
             return JsonLoader.LoadJsonData<Airport>(filePath);
         }

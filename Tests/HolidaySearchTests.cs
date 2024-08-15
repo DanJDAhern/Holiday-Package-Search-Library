@@ -5,6 +5,7 @@ using Moq;
 using Xunit;
 using System.Collections.Generic;
 using System.Linq;
+using HolidaySearchOTB.Interfaces;
 
 namespace HolidaySearchTests
 {
@@ -35,15 +36,55 @@ namespace HolidaySearchTests
         public void GetAllValidAirports_Returns_All_Airports_When_Any_Airport_Is_Input()
         {
             // Arrange
-            var searchService = new HolidaySearch("any airport", "Spain", "2024-08-01", 7);
+            var searchService = new HolidaySearch("Any Airport", "Spain", "2024-08-01", 7);
 
             // Act
-            var result = searchService.GetAllValidAirports("any airport");
+            var result = searchService.GetAllValidAirports("Any Airport");
 
             // Assert
             Assert.Equal(_airportData.Count, result.Count);
         }
 
-        
+        [Fact]
+        public void GetAllValidAirports_Returns_Correct_Airports_For_Any_City_Input()
+        {
+            // Arrange
+            var searchService = new HolidaySearch("Any London", "spain", "2024-08-01", 7);
+
+            // Act
+            var result = searchService.GetAllValidAirports("Any London");
+
+            // Assert
+            Assert.Equal(2, result.Count); // Heathrow and Gatwick
+            Assert.Contains(result, a => a.Code == "LTN");
+            Assert.Contains(result, a => a.Code == "LGW");
+        }
+
+        [Fact]
+        public void GetAllValidAirports_Returns_Correct_Airport_For_Airport_Code()
+        {
+            // Arrange
+            var searchService = new HolidaySearch("LGW", "AGP", "2024-08-01", 7);
+
+            // Act
+            var result = searchService.GetAllValidAirports("LGW");
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal("LGW", result.First().Code);
+        }
+
+        [Fact]
+        public void GetAllValidAirports_Returns_Empty_List_When_No_Match()
+        {
+            // Arrange
+            var searchService = new HolidaySearch("Gallifrey Airport", "Hyrule International", "2024-08-01", 7);
+
+            // Act
+            var result = searchService.GetAllValidAirports("Gallifrey Airport");
+
+            // Assert
+            Assert.Empty(result);
+        }
     }
 }

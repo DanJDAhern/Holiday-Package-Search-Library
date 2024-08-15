@@ -3,6 +3,7 @@ using HolidaySearchOTB.Models;
 using HolidaySearchOTB.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace HolidaySearchOTB.Services
         private readonly string airportDataPath = "Data\\Json\\Airports.json";
         private readonly string flightDataPath = "Data\\Json\\Flights.json";
         private readonly string hotelDataPath = "Data\\Json\\Hotels.json";
+
         public HolidaySearch(string departingFrom, string travellingTo, string departureDate, int duration)
         {
             var departureAirports = GetAllValidAirports(departingFrom);
@@ -37,7 +39,7 @@ namespace HolidaySearchOTB.Services
             // Check if there are no matching flights
             if (!validFlights.Any())
             {
-                throw new Exception("No matching flights found for the given criteria.");
+                //throw new Exception("No matching flights found for the given criteria.");
             }
 
             var matchingHotels = GetAllMatchingHotels(arrivalAirports, validFlights);
@@ -45,7 +47,7 @@ namespace HolidaySearchOTB.Services
             // Check if there are no matching hotels
             if (!matchingHotels.Any())
             {
-                throw new Exception("No matching hotels found for the given criteria.");
+               // throw new Exception("No matching hotels found for the given criteria.");
             }
 
             GenerateHolidayPackages(validFlights, matchingHotels, duration);
@@ -53,7 +55,7 @@ namespace HolidaySearchOTB.Services
             // Check if there are no matching holiday packages
             if (!Results.Any())
             {
-                throw new Exception("No holiday packages found matching the criteria.");
+               // throw new Exception("No holiday packages found matching the criteria.");
             }
         }
 
@@ -62,7 +64,7 @@ namespace HolidaySearchOTB.Services
             AirportDataLoader airportDataLoader = new AirportDataLoader();
             var _airports = airportDataLoader.LoadData(airportDataPath);
 
-            if (inputAirport.Equals("Any London", StringComparison.OrdinalIgnoreCase))
+            if (inputAirport.Equals("Any Airport", StringComparison.OrdinalIgnoreCase))
             {
                 return _airports.ToList();
             }
